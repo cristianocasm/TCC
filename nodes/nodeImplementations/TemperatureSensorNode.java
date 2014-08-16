@@ -1,10 +1,16 @@
 package projects.tcc.nodes.nodeImplementations;
 
+import java.awt.Color;
+
 import sinalgo.configuration.WrongConfigurationException;
 import sinalgo.nodes.Node;
 import sinalgo.nodes.messages.Inbox;
 
 public class TemperatureSensorNode extends Node {
+	
+	public TemperatureSensorNode(){
+		this.setColor(Color.RED);
+	}
 
 	@Override
 	public void handleMessages(Inbox inbox) {

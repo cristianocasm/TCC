@@ -1,5 +1,10 @@
 package projects.tcc.nodes.nodeImplementations;
 
-public class Light extends Device {
+import java.awt.Color;
 
+public class Light extends Device {
+	
+	public Light(){
+		this.setColor(Color.GREEN);
+	}
 }
