@@ -4,12 +4,13 @@ import projects.tcc.nodes.messages.NetworkMessage;
 import sinalgo.nodes.Node;
 import sinalgo.nodes.messages.Inbox;
 import sinalgo.nodes.messages.Message;
+import sinalgo.tools.Tools;
 
 public class RFDTemperatureSensorNode extends TemperatureSensorNode {
 	
 	public RFDTemperatureSensorNode(){
 		super();
-		TemperatureSensorNode.temperatureSensors.add(this);
+		// TemperatureSensorNode.temperatureSensors.add(this);
 	}
 	
 	@Override
@@ -22,6 +23,7 @@ public class RFDTemperatureSensorNode extends TemperatureSensorNode {
 				switch(((NetworkMessage) message).typeMsg){
 					case 0: // GET_TEMPERATURE
 						this.send(new NetworkMessage(NetworkMessage.TAKE_TEMPERATURE, this.temperatureVal), sender);
+						Tools.appendToOutput("TAKE: " + this.toString() + " ~>" + sender.toString() + " (" + String.format("%.2f", this.temperatureVal) + ")" + "\n");
 						break;
 //					case 1: // SET_TEMPERATURE
 //						break;

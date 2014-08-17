@@ -10,7 +10,7 @@ import sinalgo.nodes.messages.Inbox;
 
 public class TemperatureSensorNode extends Node {
 	
-	public static ArrayList<TemperatureSensorNode> temperatureSensors = new ArrayList<TemperatureSensorNode>();
+	// public static ArrayList<TemperatureSensorNode> temperatureSensors = new ArrayList<TemperatureSensorNode>();
 	protected double temperatureVal;
 	
 	public TemperatureSensorNode(){

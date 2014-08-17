@@ -2,21 +2,26 @@ package projects.tcc.nodes.nodeImplementations;
 
 import projects.tcc.nodes.messages.NetworkMessage;
 import sinalgo.nodes.Node;
+import sinalgo.nodes.edges.Edge;
 import sinalgo.nodes.messages.Inbox;
 import sinalgo.nodes.messages.Message;
+import sinalgo.tools.Tools;
 
 public class FFDTemperatureSensorNode extends TemperatureSensorNode {
+	
+	private Double auxTemperature = 0.0;
 	
 	public FFDTemperatureSensorNode(){
 		super();
 		this.setDefaultDrawingSizeInPixels(this.defaultDrawingSizeInPixels*2);
-		TemperatureSensorNode.temperatureSensors.add(this);
+		// TemperatureSensorNode.temperatureSensors.add(this);
 	}
 	
 	private void getTemperatureFromRFDs(){
-		for(TemperatureSensorNode sensor : TemperatureSensorNode.temperatureSensors){
-			if(sensor instanceof RFDTemperatureSensorNode){
-				this.send(new NetworkMessage(NetworkMessage.GET_TEMPERATURE, null), sensor);
+		for(Edge ed : this.outgoingConnections){
+			if(ed.endNode instanceof RFDTemperatureSensorNode){
+				this.send(new NetworkMessage(NetworkMessage.GET_TEMPERATURE, null), ed.endNode);
+				Tools.appendToOutput("GET: FFD" + " ~> " + ed.endNode.toString() + "\n");
 			}
 		}
 	}
@@ -47,9 +52,22 @@ public class FFDTemperatureSensorNode extends TemperatureSensorNode {
 					case 5: // AIR_CONDITIONER_OFF
 						AirConditioner.turnOff();
 						break;
-					case 6:
-						
+					case 6: // TAKE_TEMPERATURE
+						this.auxTemperature += ((NetworkMessage) message).value;
 						break;
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void postStep() {
+		if(this.auxTemperature != 0.0){
+			for(Edge ed : this.outgoingConnections){
+				if(ed.endNode instanceof Coordinator){
+					this.send(new NetworkMessage(NetworkMessage.TAKE_TEMPERATURE, this.auxTemperature/3), ed.endNode);
+					Tools.appendToOutput("TAKE: FFD" + " ~> " + ed.endNode.toString() + "(" + String.format("%.2f", this.auxTemperature/3) + ")" + "\n");
+					this.auxTemperature = 0.0;
 				}
 			}
 		}
