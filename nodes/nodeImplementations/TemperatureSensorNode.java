@@ -10,8 +10,8 @@ import sinalgo.nodes.messages.Inbox;
 
 public class TemperatureSensorNode extends Node {
 	
-	private static ArrayList<TemperatureSensorNode> temperatureSensors = new ArrayList<TemperatureSensorNode>();
-	private double temperatureVal;
+	public static ArrayList<TemperatureSensorNode> temperatureSensors = new ArrayList<TemperatureSensorNode>();
+	protected double temperatureVal;
 	
 	public TemperatureSensorNode(){
 		this.setColor(Color.RED);
@@ -20,10 +20,6 @@ public class TemperatureSensorNode extends Node {
 	
 	public double temperatureVal(){
 		return this.temperatureVal;
-	}
-	
-	public static void addTemperatureSensor(TemperatureSensorNode temperatureSensor){
-		TemperatureSensorNode.temperatureSensors.add(temperatureSensor);
 	}
 
 	@Override

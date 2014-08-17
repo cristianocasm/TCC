@@ -6,6 +6,7 @@ public class AirConditioner extends Device {
 	
 	private static double actualTemperatureVal = 25.0;
 	private static double oldTemperatureVal = AirConditioner.actualTemperatureVal;
+	private static boolean turnedOn = false;
 	
 	public AirConditioner(){
 		this.setColor(Color.orange);
@@ -24,6 +25,14 @@ public class AirConditioner extends Device {
 		if(AirConditioner.actualTemperatureVal != AirConditioner.oldTemperatureVal){
 			// TODO
 		}
+	}
+	
+	public static void turnOn(){
+		AirConditioner.turnedOn = true;
+	}
+	
+	public static void turnOff(){
+		AirConditioner.turnedOn = false;
 	}
 
 }

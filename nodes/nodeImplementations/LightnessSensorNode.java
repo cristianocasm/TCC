@@ -9,15 +9,11 @@ import sinalgo.nodes.messages.Inbox;
 
 public class LightnessSensorNode extends Node {
 	
-	private static ArrayList<LightnessSensorNode> lumSensors = new ArrayList<LightnessSensorNode>();
+	public static ArrayList<LightnessSensorNode> lumSensors = new ArrayList<LightnessSensorNode>();
 	private double lumVal;
 
 	public LightnessSensorNode(){
 		this.setColor(Color.CYAN);
-	}
-	
-	public static void addLumSensor(LightnessSensorNode lumSensor){
-		LightnessSensorNode.lumSensors.add(lumSensor);
 	}
 	
 	public double getLumVal(){

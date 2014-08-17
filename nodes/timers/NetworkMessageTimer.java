@@ -2,8 +2,8 @@ package projects.tcc.nodes.timers;
 
 import java.util.ArrayList;
 
-import projects.leader.nodes.messages.NetworkMessage;
-import projects.leader.nodes.nodeImplementations.SimpleNode;
+import projects.tcc.nodes.messages.NetworkMessage;
+import projects.tcc.nodes.nodeImplementations.SimpleNode;
 import sinalgo.nodes.Node;
 import sinalgo.nodes.timers.Timer;
 
@@ -16,7 +16,7 @@ public class NetworkMessageTimer extends Timer {
 
 	@Override
 	public void fire() {
-		switch(this.message.tipoMsg){
+		switch(this.message.typeMsg){
 			case 0:
 				this.fireLeaderElectionMsg();
 				break;

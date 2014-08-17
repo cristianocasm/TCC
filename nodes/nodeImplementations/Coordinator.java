@@ -1,63 +1,60 @@
 package projects.tcc.nodes.nodeImplementations;
 
 import java.awt.Color;
+import java.util.Random;
 
-import projects.leader.nodes.messages.NetworkMessage;
-import projects.leader.nodes.timers.NetworkMessageTimer;
-
+import projects.tcc.nodes.messages.NetworkMessage;
+import projects.tcc.nodes.timers.NetworkMessageTimer;
 import sinalgo.configuration.WrongConfigurationException;
 import sinalgo.nodes.Node;
-import sinalgo.nodes.Node.NodePopupMethod;
 import sinalgo.nodes.messages.Inbox;
-import sinalgo.runtime.Global;
-import sinalgo.tools.Tools;
 
-public class Gateway extends Node {
+public class Coordinator extends Node {
 	
-	private final int GET_TEMPERATURE = 0;
-	private final int SET_TEMPERATURE = 1;
-	private final int GET_LIGHTNESS = 2;
-	private final int SET_LIGHTNESS = 3;
-	private final int AIR_CONDITIONER_ON = 4;
-	private final int AIR_CONDITIONER_OFF = 5;
-	
-	public Gateway(){
+	public Coordinator(){
 		this.setColor(Color.BLUE);
 	}
 	
-	private void scheduleMessageSending(int typeMsg){
-		NetworkMessageTimer timer = new NetworkMessageTimer(new NetworkMessage(typeMsg));
+	private void scheduleMessageSending(Integer typeMsg, Double value){
+		NetworkMessageTimer timer = new NetworkMessageTimer(new NetworkMessage(typeMsg, value));
 		timer.startRelative(1, this);
+	}
+	
+	private int randInt(int min, int max) {
+	    Random rand = new Random();
+	    int randomNum = rand.nextInt((max - min) + 1) + min;
+
+	    return randomNum;
 	}
 	
 	@NodePopupMethod(menuText = "Get Temperature")
 	public void getTemperature() {
-		this.scheduleMessageSending(GET_TEMPERATURE);
+		this.scheduleMessageSending(NetworkMessage.GET_TEMPERATURE, null);
 	}
 	
-	@NodePopupMethod(menuText = "Set Temperature = 20")
+	@NodePopupMethod(menuText = "Change Temperature")
 	public void setTemperature() {
-		this.scheduleMessageSending(SET_TEMPERATURE);
+		this.scheduleMessageSending(NetworkMessage.SET_TEMPERATURE, new Double(randInt(15, 25)));
 	}
 	
 	@NodePopupMethod(menuText = "Get Lightness")
 	public void getLightness() {
-		this.scheduleMessageSending(GET_LIGHTNESS);
+		this.scheduleMessageSending(NetworkMessage.GET_LIGHTNESS, null);
 	}
 
-	@NodePopupMethod(menuText = "Set Lightness = 100")
+	@NodePopupMethod(menuText = "Change Lightness")
 	public void setLightness() {
-		this.scheduleMessageSending(SET_LIGHTNESS);
+		this.scheduleMessageSending(NetworkMessage.SET_LIGHTNESS, new Double(randInt(0,100)));
 	}
 	
 	@NodePopupMethod(menuText = "Turn Air Conditioner ON")
 	public void airConditionerON() {
-		this.scheduleMessageSending(AIR_CONDITIONER_ON);
+		this.scheduleMessageSending(NetworkMessage.AIR_CONDITIONER_ON, null);
 	}
 	
 	@NodePopupMethod(menuText = "Turn Air Conditioner OFF")
 	public void airConditionerOFF() {
-		this.scheduleMessageSending(AIR_CONDITIONER_OFF);
+		this.scheduleMessageSending(NetworkMessage.AIR_CONDITIONER_OFF, null);
 	}
 	
 	@Override

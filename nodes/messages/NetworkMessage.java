@@ -40,20 +40,21 @@ import sinalgo.nodes.messages.Message;
 
 public class NetworkMessage extends Message {
 
-	/**
-	 * Tipo do Pacote.
-	 * 
-	 * 0 - 'ELECTION'
-	 * 1 - 'STOP'
-	 * 2 - 'PING'
-	 * 3 - 'PONG'
-	 * 
-	 * */
-	public Integer tipoMsg;
+	public static final int GET_TEMPERATURE = 0;
+	public static final int SET_TEMPERATURE = 1;
+	public static final int GET_LIGHTNESS = 2;
+	public static final int SET_LIGHTNESS = 3;
+	public static final int AIR_CONDITIONER_ON = 4;
+	public static final int AIR_CONDITIONER_OFF = 5;
+	public static final int TAKE_TEMPERATURE = 6;
+	
+	public Integer typeMsg;
+	public Double value;
 
 	// Construtor da Classe
-	public NetworkMessage(int tipo) {
-		this.tipoMsg = tipo;
+	public NetworkMessage(Integer type, Double value) {
+		this.typeMsg = type;
+		this.value = value;
 	}
 
 	@Override
