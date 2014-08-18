@@ -14,21 +14,13 @@ public class NetworkMessageTimer extends Timer {
 	public NetworkMessageTimer(NetworkMessage message) {
 		this.message = message;
 	}
-	
-//	public static final int GET_TEMPERATURE = 0;
-//	public static final int SET_TEMPERATURE = 1;
-//	public static final int GET_LIGHTNESS = 2;
-//	public static final int SET_LIGHTNESS = 3;
-//	public static final int AIR_CONDITIONER_ON = 4;
-//	public static final int AIR_CONDITIONER_OFF = 5;
-//	public static final int TAKE_TEMPERATURE = 6;
 
 	private void sendGetMsg(Class<?> klass){
 		if(this.node instanceof Coordinator){
 			for(Edge ed : this.node.outgoingConnections){
 				if(ed.endNode.getClass().equals(klass)){ // Temperature or Lightness FFD
 					this.node.send(this.message, ed.endNode);
-					Tools.appendToOutput("GET: " + this.node.toString() + " ~> FFD\n");
+					Tools.appendToOutput("GET: Coordinator ~> FFD\n");
 				}
 			}
 		}else if(this.node.getClass().equals(klass)){
@@ -45,7 +37,25 @@ public class NetworkMessageTimer extends Timer {
 		for(Edge ed : this.node.outgoingConnections){
 			if(ed.endNode.getClass().equals(klass)){
 				this.node.send(this.message, ed.endNode);
-				Tools.appendToOutput("SET: " + this.node.toString() + " ~> FFD\n");
+				Tools.appendToOutput("SET: " + this.node.toString() + " ~> FFD (" + this.message.value + ")\n");
+			}
+		}
+	}
+	
+	private void sendTurnOnAirConditioner(){
+		for(Edge ed : this.node.outgoingConnections){
+			if(ed.endNode instanceof FFDTemperatureSensorNode){
+				this.node.send(this.message, ed.endNode);
+				Tools.appendToOutput("TURN_ON: " + this.node.toString() + " ~> FFD\n");
+			}
+		}
+	}
+	
+	private void sendTurnOffAirConditioner(){
+		for(Edge ed : this.node.outgoingConnections){
+			if(ed.endNode instanceof FFDTemperatureSensorNode){
+				this.node.send(this.message, ed.endNode);
+				Tools.appendToOutput("TURN_OFF: " + this.node.toString() + " ~> FFD\n");
 			}
 		}
 	}
@@ -53,23 +63,25 @@ public class NetworkMessageTimer extends Timer {
 	@Override
 	public void fire() {
 		switch(this.message.typeMsg){
-			case 0:
+			case 0: // GET_TEMPERATURE
 				this.sendGetMsg(FFDTemperatureSensorNode.class);
 				break;
-			case 1:
+			case 1: // SET_TEMPERATURE
 				this.sendSetMsg(FFDTemperatureSensorNode.class);
 				break;
-			case 2:
+			case 2: // GET_LIGHTNESS
 				this.sendGetMsg(FFDLightnessSensorNode.class);
 				break;
-			case 3:
+			case 3: // SET_LIGHTNESS
 				this.sendSetMsg(FFDLightnessSensorNode.class);
 				break;
-			case 4:
+			case 4: // AIR_CONDITIONER_ON
+				this.sendTurnOnAirConditioner();
 				break;
-			case 5:
+			case 5: // AIR_CONDITIONER_OFF
+				this.sendTurnOffAirConditioner();
 				break;
-			case 6:
+			case 6: // TAKE_TEMPERATURE
 				break;
 		}
 	}

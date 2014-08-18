@@ -2,6 +2,7 @@ package projects.tcc.nodes.nodeImplementations;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
 
 import sinalgo.configuration.WrongConfigurationException;
 import sinalgo.nodes.Node;
@@ -9,11 +10,12 @@ import sinalgo.nodes.messages.Inbox;
 
 public class LightnessSensorNode extends Node {
 	
-	public static ArrayList<LightnessSensorNode> lumSensors = new ArrayList<LightnessSensorNode>();
-	private double lumVal;
+	// public static ArrayList<LightnessSensorNode> lumSensors = new ArrayList<LightnessSensorNode>();
+	protected double lumVal;
 
 	public LightnessSensorNode(){
 		this.setColor(Color.CYAN);
+		this.lumVal = Light.getLum() * (new Random().nextDouble()/2.8 + 0.625); // [1000, 1600[
 	}
 	
 	public double getLumVal(){

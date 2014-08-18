@@ -23,7 +23,7 @@ public class RFDTemperatureSensorNode extends TemperatureSensorNode {
 				switch(((NetworkMessage) message).typeMsg){
 					case 0: // GET_TEMPERATURE
 						this.send(new NetworkMessage(NetworkMessage.TAKE_TEMPERATURE, this.temperatureVal), sender);
-						Tools.appendToOutput("TAKE: " + this.toString() + " ~>" + sender.toString() + " (" + String.format("%.2f", this.temperatureVal) + ")" + "\n");
+						Tools.appendToOutput("TAKE: " + this.toString() + " ~> FFD " + " (" + String.format("%.2f", this.temperatureVal) + ")" + "\n");
 						break;
 //					case 1: // SET_TEMPERATURE
 //						break;

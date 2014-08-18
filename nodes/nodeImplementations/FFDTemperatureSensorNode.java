@@ -26,6 +26,14 @@ public class FFDTemperatureSensorNode extends TemperatureSensorNode {
 		}
 	}
 	
+	private void sendMsgToAirConditioner(Integer msg, Double value){
+		for(Edge ed : this.outgoingConnections){
+			if(ed.endNode instanceof AirConditioner){
+				this.send(new NetworkMessage(msg, value), ed.endNode);
+			}
+		}
+	}
+	
 	@Override
 	public void handleMessages(Inbox inbox) {
 		while (inbox.hasNext()) {
@@ -38,7 +46,8 @@ public class FFDTemperatureSensorNode extends TemperatureSensorNode {
 						this.getTemperatureFromRFDs();
 						break;
 					case 1: // SET_TEMPERATURE
-						AirConditioner.setTemperature(((NetworkMessage) message).value);
+						this.sendMsgToAirConditioner(NetworkMessage.SET_TEMPERATURE, ((NetworkMessage) message).value);
+						Tools.appendToOutput("SET: FFD" + " ~> Air Conditioner (" + ((NetworkMessage) message).value + ")\n");
 						break;
 //					case 2: // GET_LIGHTNESS
 //						this.getLightnessFromRFDs();
@@ -47,10 +56,12 @@ public class FFDTemperatureSensorNode extends TemperatureSensorNode {
 //						Light.setLumVal(((NetworkMessage) message).value);
 //						break;
 					case 4: // AIR_CONDITIONER_ON
-						AirConditioner.turnOn();
+						this.sendMsgToAirConditioner(NetworkMessage.AIR_CONDITIONER_ON, null);
+						Tools.appendToOutput("TURN_ON: FFD ~> Air Conditioner\n");
 						break;
 					case 5: // AIR_CONDITIONER_OFF
-						AirConditioner.turnOff();
+						this.sendMsgToAirConditioner(NetworkMessage.AIR_CONDITIONER_OFF, null);
+						Tools.appendToOutput("TURN_OFF: FFD ~> Air Conditioner\n");
 						break;
 					case 6: // TAKE_TEMPERATURE
 						this.auxTemperature += ((NetworkMessage) message).value;
@@ -66,7 +77,7 @@ public class FFDTemperatureSensorNode extends TemperatureSensorNode {
 			for(Edge ed : this.outgoingConnections){
 				if(ed.endNode instanceof Coordinator){
 					this.send(new NetworkMessage(NetworkMessage.TAKE_TEMPERATURE, this.auxTemperature/3), ed.endNode);
-					Tools.appendToOutput("TAKE: FFD" + " ~> " + ed.endNode.toString() + "(" + String.format("%.2f", this.auxTemperature/3) + ")" + "\n");
+					Tools.appendToOutput("TAKE: FFD" + " ~> " + ed.endNode.toString() + " (" + String.format("%.2f", this.auxTemperature/3) + ")" + "\n");
 					this.auxTemperature = 0.0;
 				}
 			}

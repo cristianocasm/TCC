@@ -1,7 +1,6 @@
 package projects.tcc.nodes.nodeImplementations;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Random;
 
 import sinalgo.configuration.WrongConfigurationException;
@@ -15,7 +14,7 @@ public class TemperatureSensorNode extends Node {
 	
 	public TemperatureSensorNode(){
 		this.setColor(Color.RED);
-		this.temperatureVal = AirConditioner.getTemperature() * (new Random().nextDouble()*2 + 0.90); // [0.9, 1.1[
+		this.temperatureVal = AirConditioner.getTemperature() * (new Random().nextDouble()/5 + 0.9); // [0.90, 1.1[
 	}
 	
 	public double temperatureVal(){

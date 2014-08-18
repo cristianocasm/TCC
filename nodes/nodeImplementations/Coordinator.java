@@ -45,7 +45,7 @@ public class Coordinator extends Node {
 
 	@NodePopupMethod(menuText = "Change Lightness")
 	public void setLightness() {
-		this.scheduleMessageSending(NetworkMessage.SET_LIGHTNESS, new Double(randInt(0,100)));
+		this.scheduleMessageSending(NetworkMessage.SET_LIGHTNESS, new Double(randInt(1000,1600)));
 	}
 	
 	@NodePopupMethod(menuText = "Turn Air Conditioner ON")
@@ -62,9 +62,7 @@ public class Coordinator extends Node {
 	public void handleMessages(Inbox inbox) {
 		while (inbox.hasNext()) {
 			Message message = inbox.next();			
-			if (message instanceof NetworkMessage) {
-				Node sender = inbox.getSender();
-				
+			if (message instanceof NetworkMessage) {				
 				switch(((NetworkMessage) message).typeMsg){
 					case 0: // GET_TEMPERATURE
 						break;
